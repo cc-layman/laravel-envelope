@@ -1,0 +1,32 @@
+{
+    "name": "layman/laravel-envelope",
+    "description": "A Laravel package for crypto functionality.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Layman\\LaravelEnvelope\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "layman"
+        }
+    ],
+    "require": {
+        "php": "^7.0|^8.0",
+        "ext-openssl": "*"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Layman\\LaravelEnvelope\\EnvelopeServiceProvider"
+            ],
+            "aliases": {
+                "Envelope": "Layman\\LaravelEnvelope\\Facades\\Envelope"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
