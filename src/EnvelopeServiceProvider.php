@@ -3,7 +3,7 @@
 namespace Layman\LaravelEnvelope;
 
 use Illuminate\Support\ServiceProvider;
-use Layman\LaravelEnvelope\Console\envelopeCommand;
+use Layman\LaravelEnvelope\Console\EnvelopeCommand;
 
 class EnvelopeServiceProvider extends ServiceProvider
 {
