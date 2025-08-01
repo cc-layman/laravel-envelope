@@ -63,7 +63,7 @@ class EnvelopeManager
     public function signature(array $data): string
     {
         ksort($data);
-        $raw = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $raw = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         if (!openssl_sign(strtoupper(md5($raw)), $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
             throw new Exception('Signing failed: ' . openssl_error_string());
         }
@@ -85,7 +85,7 @@ class EnvelopeManager
             throw new Exception('RSA encryption failed: ' . openssl_error_string());
         }
 
-        $plaintext = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $plaintext = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         $nonce     = random_bytes(16);
         $data      = openssl_encrypt($plaintext, 'AES-256-CBC', $aesKey, OPENSSL_RAW_DATA, $nonce);
 
@@ -106,7 +106,7 @@ class EnvelopeManager
     public function clientVerifySignature(array $data, string $signature): bool
     {
         ksort($data);
-        $raw       = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $raw       = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         $signature = base64_decode($signature);
         $result    = openssl_verify(strtoupper(md5($raw)), $signature, $this->publicKey, OPENSSL_ALGO_SHA256);
         return $result === 1;
