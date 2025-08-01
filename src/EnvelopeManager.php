@@ -62,8 +62,8 @@ class EnvelopeManager
      */
     public function signature(array $data): string
     {
-        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
-        if (!openssl_sign($data, $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
+        $raw = json_encode(ksort($data), JSON_UNESCAPED_UNICODE);
+        if (!openssl_sign(md5($raw), $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
             throw new Exception('Signing failed: ' . openssl_error_string());
         }
         return base64_encode($signature);
@@ -104,9 +104,9 @@ class EnvelopeManager
      */
     public function clientVerifySignature(array $data, string $signature): bool
     {
-        $raw       = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $raw       = json_encode(ksort($data), JSON_UNESCAPED_UNICODE);
         $signature = base64_decode($signature);
-        $result    = openssl_verify($raw, $signature, $this->publicKey, OPENSSL_ALGO_SHA256);
+        $result    = openssl_verify(md5($raw), $signature, $this->publicKey, OPENSSL_ALGO_SHA256);
         return $result === 1;
     }
 }
